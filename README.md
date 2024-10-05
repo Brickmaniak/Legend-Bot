@@ -12,7 +12,7 @@
 **Introduction**
 ---------------
 
-Legend Bot is a customizable bot that can be configured by modifying its code. It is not based on a template and can evolve over time.
+Legend Bot is a customizable bot that can be configured by modifying its code. It is not a template and can evolve over time.
 
 **Configuration**
 ----------------

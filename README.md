@@ -21,6 +21,7 @@ To configure the bot, you need to modify its code. Here are the steps to follow:
 
 * Clone the Git repository: `git clone https://github.com/Brickmaniak/Legend-Bot.git`
 * Modify the code files to customize the bot
+* On the line 400, in `bot.run("BOT_TOKEN")`, replace BOT_TOKEN by the token of your bot (Create a bot and a token here: [Discord Developper Portal](https://discord.com/developers/applications).
 * Save your changes and run the bot
 
 **Updates**

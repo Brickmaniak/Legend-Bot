@@ -12,7 +12,7 @@ status = ["+ping",
          "+serverInfo",
          "+devconsole",
          "Coucou!",
-		     "+chinese",
+		 "+chinese",
          "+blague",
          "+giffle",
          "+calin",
@@ -383,7 +383,8 @@ async def edit_message(ctx, message_id: int, *, new_content: str):
     except discord.HTTPException as e:
         await ctx.reply(f"Erreur lors de la modification du message : {e.text}")
 
-@bot.command()
+@bot.command(help="Débannir un membre")
+@commands.has_permissions(manage_messages=True)
 async def unban(ctx, user: discord.User):
     try:
         await ctx.guild.unban(user)

@@ -12,7 +12,7 @@ status = ["+ping",
          "+serverInfo",
          "+devconsole",
          "Coucou!",
-		 "+chinese",
+	 "+chinese",
          "+blague",
          "+giffle",
          "+calin",
@@ -24,6 +24,13 @@ status = ["+ping",
 intents.message_content = True
 intents.members = True
 intents.voice_states = True
+raid_detection_threshold = 10
+raid_detection_window = 60
+raid_cooldown_window = 300
+
+join_timestamps = []
+auto_kick_enabled = True
+raid_in_progress = False
 
 @bot.event
 async def on_ready():
@@ -62,6 +69,48 @@ async def serverinfo(ctx):
 async def devconsole(ctx, *texte):
     print(" ".join(texte))
     await ctx.message.delete()
+
+@bot.command(name='antiraid-disable')
+@commands.has_permissions(manage_messages=True)
+async def disable_antiraid(ctx):
+    global auto_kick_enabled
+    auto_kick_enabled = False
+    await ctx.send('Antiraid désactivé.')
+
+@bot.command(name='antiraid-enable')
+@commands.has_permissions(manage_messages=True)
+async def enable_antiraid(ctx):
+    global auto_kick_enabled
+    auto_kick_enabled = True
+    await ctx.send('Antiraid activé')
+
+@bot.event
+async def on_member_join(member):
+    global raid_in_progress
+    join_timestamps.append(datetime.datetime.now())
+    if len(join_timestamps) > raid_detection_threshold:
+        recent_joins = [ts for ts in join_timestamps if (datetime.datetime.now() - ts).total_seconds() < raid_detection_window]
+        if len(recent_joins) > raid_detection_threshold:
+            auto_kick_enabled = True
+            raid_in_progress = True
+            await auto_kick_members(member)
+        else:
+            auto_kick_enabled = False
+            raid_in_progress = False
+    else:
+        auto_kick_enabled = False
+        raid_in_progress = False
+
+    join_timestamps = [ts for ts in join_timestamps if (datetime.datetime.now() - ts).total_seconds() < raid_detection_window + raid_cooldown_window]
+
+    if raid_in_progress and len([ts for ts in join_timestamps if (datetime.datetime.now() - ts).total_seconds() < raid_cooldown_window]) < raid_detection_threshold:
+        auto_kick_enabled = False
+        raid_in_progress = False
+
+async def auto_kick_members(member):
+    for m in member.guild.members:
+        if m.joined_at > datetime.datetime.now() - datetime.timedelta(seconds=raid_detection_window):
+            await m.kick(reason='Raid détecté')
 
 @bot.command(help="Parler via le bot",)
 @commands.has_permissions(manage_messages=True)

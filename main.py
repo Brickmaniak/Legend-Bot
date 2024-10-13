@@ -180,8 +180,8 @@ async def on_member_join(member):
 async def clear(ctx, amount: int = 100):
     await ctx.channel.purge(limit=amount + 1)
 
-@bot.command(help="Ouvrir un ticket",)
-async def ticket(ctx, raison):
+@bot.command(help="Ouvrir un ticket")
+async def ticket(ctx, *, raison):
         category = discord.utils.get(ctx.guild.categories, name='🎟tickets🎟')
         if category is None:
             category = await ctx.guild.create_category('🎟tickets🎟')

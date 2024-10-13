@@ -76,14 +76,14 @@ async def devconsole(ctx, *texte):
 async def disable_antiraid(ctx):
     global auto_kick_enabled
     auto_kick_enabled = False
-    await ctx.send('Antiraid désactivé.')
+    await ctx.reply('Antiraid désactivé.')
 
 @bot.command(name='antiraid-enable')
 @commands.has_permissions(manage_messages=True)
 async def enable_antiraid(ctx):
     global auto_kick_enabled
     auto_kick_enabled = True
-    await ctx.send('Antiraid activé')
+    await ctx.reply('Antiraid activé')
 
 @bot.event
 async def on_member_join(member):

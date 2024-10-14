@@ -71,14 +71,14 @@ async def devconsole(ctx, *texte):
     print(" ".join(texte))
     await ctx.message.delete()
 
-@bot.command(name='antiraid-disable')
+@bot.command(name='antiraid-disable', help="Désactiver l'antiraid")
 @commands.has_permissions(manage_messages=True)
 async def disable_antiraid(ctx):
     global auto_kick_enabled
     auto_kick_enabled = False
     await ctx.reply('Antiraid désactivé.')
 
-@bot.command(name='antiraid-enable')
+@bot.command(name='antiraid-enable', help="Activer l'antiraid")
 @commands.has_permissions(manage_messages=True)
 async def enable_antiraid(ctx):
     global auto_kick_enabled
